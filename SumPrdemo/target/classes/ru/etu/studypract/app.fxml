@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="mainPane" prefHeight="500.0" prefWidth="700.0" stylesheets="@../../../styles/app.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.etu.controllers.App">
+    <children>
+        <MenuBar fx:id="menuBar" prefHeight="25.0" prefWidth="1000.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <Menu mnemonicParsing="false" text="New">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Directed Graph" />
+                                <MenuItem mnemonicParsing="false" text="Undirected Graph" />
+                            </items>
+                        </Menu>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Open" />
+                        <MenuItem fx:id="saveMeMenuItem" mnemonicParsing="false" text="Save" />
+                        <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" text="Save As" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" text="Exit" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem fx:id="changeMenuItem" mnemonicParsing="false" text="Change Mode" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <Menu fx:id="settingsMenu" mnemonicParsing="false" text="Settings Mode Instruments">
+                            <items>
+                                <MenuItem fx:id="moveMenuItem" mnemonicParsing="false" text="Move" />
+                                <MenuItem fx:id="vertexMenuItem" mnemonicParsing="false" text="Create Vertex" />
+                                <MenuItem fx:id="edgeMenuItem" mnemonicParsing="false" text="Create Edge" />
+                                <MenuItem fx:id="chooseMenuItem" mnemonicParsing="false" text="Choose Vertices" />
+                                <MenuItem fx:id="clearMenuItem" mnemonicParsing="false" text="Clear Graph" />
+                            </items>
+                        </Menu>
+                        <Menu fx:id="playMenu" mnemonicParsing="false" text="Play Mode Instruments">
+                            <items>
+                                <MenuItem fx:id="playMenuItem" mnemonicParsing="false" text="Play" />
+                                <MenuItem fx:id="pauseMenuItem" mnemonicParsing="false" text="Pause" />
+                                <MenuItem fx:id="stopMenuItem" mnemonicParsing="false" text="Stop" />
+                                <MenuItem fx:id="prevMenuItem" mnemonicParsing="false" text="Prev. Step" />
+                                <MenuItem fx:id="nextMenuItem" mnemonicParsing="false" text="Next Step" />
+                            </items>
+                        </Menu>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Open Logs" />
+                        <MenuItem mnemonicParsing="false" text="Settings" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Our repository" />
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <BorderPane fx:id="contentBorderPane" layoutY="25.0" prefHeight="700.0" prefWidth="1000.0">
+            <top>
+                <HBox maxHeight="86.0" minHeight="86.0" prefHeight="86.0" prefWidth="1000.0" styleClass="top-panel" BorderPane.alignment="CENTER">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#changeMode" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="top-btn">
+                            <graphic>
+                                <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../Icons/ChangeMode.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <HBox alignment="CENTER" maxHeight="76.0" minHeight="76.0" prefHeight="76.0" prefWidth="886.0" spacing="10.0">
+                            <children>
+                                <Button fx:id="prevBtn" maxHeight="76.0" maxWidth="76.0" minHeight="76.0" minWidth="76.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="top-btn">
+                                    <graphic>
+                                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../Icons/left-arrow.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <ToggleButton fx:id="pauseBtn" maxHeight="76.0" maxWidth="76.0" minHeight="76.0" minWidth="76.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="top-btn">
+                                    <toggleGroup>
+                                        <ToggleGroup fx:id="PlayGroup" />
+                                    </toggleGroup>
+                                    <graphic>
+                                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../Icons/pause.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </ToggleButton>
+                                <ToggleButton fx:id="playBtn" maxHeight="76.0" maxWidth="76.0" minHeight="76.0" minWidth="76.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="top-btn" toggleGroup="$PlayGroup">
+                                    <graphic>
+                                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../Icons/Play.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </ToggleButton>
+                                <Button fx:id="stopBtn" maxHeight="76.0" maxWidth="76.0" minHeight="76.0" minWidth="76.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="top-btn">
+                                    <graphic>
+                                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../Icons/stop-button.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <Button fx:id="nextBtn" maxHeight="76.0" maxWidth="76.0" minHeight="76.0" minWidth="76.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="top-btn">
+                                    <graphic>
+                                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../Icons/right-arrow.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </children>
+                        </HBox>
+                    </children>
+                    <BorderPane.margin>
+                        <Insets />
+                    </BorderPane.margin>
+                    <padding>
+                        <Insets left="5.0" top="5.0" />
+                    </padding>
+                </HBox>
+            </top>
+            <left>
+                <VBox maxWidth="86.0" minWidth="86.0" prefHeight="619.0" prefWidth="86.0" styleClass="left-panel" BorderPane.alignment="CENTER">
+                    <children>
+                        <Button maxHeight="76.0" maxWidth="76.0" minHeight="76.0" minWidth="76.0" mnemonicParsing="false" onAction="#changeMode" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn">
+                            <graphic>
+                                <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../Icons/ChangeMode.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <VBox alignment="CENTER" maxWidth="76.0" minWidth="76.0" prefHeight="512.0" prefWidth="76.0" spacing="10.0">
+                            <children>
+                                <ToggleButton fx:id="moveBtn" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn">
+                                    <graphic>
+                                        <ImageView fitHeight="84.0" fitWidth="60.0" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../Icons/Move.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                    <toggleGroup>
+                                        <ToggleGroup fx:id="SettingsGroup" />
+                                    </toggleGroup>
+                                </ToggleButton>
+                                <ToggleButton fx:id="vertexBtn" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn" toggleGroup="$SettingsGroup">
+                                    <graphic>
+                                        <ImageView fitHeight="60.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../Icons/VertexCreation.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </ToggleButton>
+                                <ToggleButton fx:id="edgeBtn" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn" toggleGroup="$SettingsGroup">
+                                    <graphic>
+                                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../Icons/EdgeCreation.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </ToggleButton>
+                                <ToggleButton fx:id="chooseBtn" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn" toggleGroup="$SettingsGroup">
+                                    <graphic>
+                                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../Icons/ChooseVertices.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </ToggleButton>
+                                <Button fx:id="clearBtn" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn">
+                                    <graphic>
+                                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../Icons/deleteGraph.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </children>
+                        </VBox>
+                    </children>
+                    <BorderPane.margin>
+                        <Insets />
+                    </BorderPane.margin>
+                    <padding>
+                        <Insets left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                </VBox>
+            </left>
+            <center>
+                <Pane fx:id="graphPanePane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="graph-pane-pane">
+
+                </Pane>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>

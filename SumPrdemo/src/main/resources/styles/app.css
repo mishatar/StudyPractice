@@ -1,0 +1,37 @@
+
+.top-panel, .top-btn {
+    -fx-background-color: #86c460;
+}
+
+.top-btn:hover {
+    -fx-background-color: #76ab55;
+}
+
+.top-btn:armed {
+    -fx-background-color: #669349;
+}
+
+.top-btn:selected {
+    -fx-background-color: #669349;
+}
+
+.left-panel, .left-btn {
+    -fx-background-color: #9c71c4;
+}
+
+.left-btn:hover {
+    -fx-background-color: #8460a6;
+}
+
+.left-btn:armed {
+    -fx-background-color: #73538f;
+}
+
+.left-btn:selected {
+    -fx-background-color: #73538f;
+
+}
+
+.graph-pane-pane {
+    -fx-background-color: rgba(239, 232, 226, 0.77);
+}
