@@ -1,0 +1,98 @@
+
+.graph-pane {
+    -fx-background-color: white;
+}
+
+.vertex {
+    -fx-fill: #B0C4DE;
+}
+
+.vertex-selected {
+    -fx-stroke-width: 2;
+    -fx-stroke: #7fdc3c;
+}
+
+.vertex-selected-for-algorithm-1 {
+    -fx-stroke-width: 2;
+    -fx-stroke: #0600ff;
+}
+
+.vertex-selected-for-algorithm-2 {
+    -fx-stroke-width: 2;
+    -fx-stroke: #ff0000;
+}
+
+.vertex-check {
+    -fx-stroke-width: 2;
+    -fx-stroke: #e584ac;
+}
+
+.vertex-update {
+    -fx-fill: #96dabc;
+}
+
+.vertex-path {
+    -fx-stroke-width: 2;
+    -fx-stroke: #e85b97;
+}
+
+.vertex-label {
+    -fx-font: bold 10pt Sans-serif;
+}
+
+
+.edge {
+    -fx-stroke: #a64f2c;
+    -fx-stroke-width: 1;
+}
+
+.curved-edge {
+    -fx-fill: none;
+    -fx-stroke: #a64f2c;
+    -fx-stroke-width: 1;
+}
+
+.edge-check {
+    -fx-stroke-width: 2;
+    -fx-stroke: #ea7b57;
+}
+
+.edge-path {
+    -fx-stroke: #ff5000;
+    -fx-stroke-width: 2;
+}
+
+.edge-in-creation {
+    -fx-stroke: #c26034;
+    -fx-stroke-width: 2;
+    -fx-stroke-dash-array: 3;
+}
+
+.edge-label {
+    -fx-font: normal 11pt Sans-serif;
+}
+
+.arrow {
+    -fx-stroke: #a64f2c;
+    -fx-stroke-width: 1;
+}
+
+.arrow-path {
+    -fx-stroke: #ff5000;
+    -fx-stroke-width: 2;
+}
+
+.arrow-check {
+    -fx-stroke-width: 2;
+    -fx-stroke: #ea7b57;
+}
+
+
+.checking-label {
+    -fx-font: italic 11pt Sans-serif;
+}
+
+.updating {
+    -fx-font-weight: bold;
+    -fx-font: 11pt Sans-serif;
+}

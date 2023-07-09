@@ -13,8 +13,8 @@
                     <items>
                         <Menu mnemonicParsing="false" text="New">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Directed Graph" />
-                                <MenuItem mnemonicParsing="false" text="Undirected Graph" />
+                                <MenuItem mnemonicParsing="false" onAction="#createNewDirectedGraph" text="Directed Graph" />
+                                <MenuItem mnemonicParsing="false" onAction="#createNewGraph" text="Undirected Graph" />
                             </items>
                         </Menu>
                         <SeparatorMenuItem mnemonicParsing="false" />
@@ -54,7 +54,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Our repository" />
+                        <MenuItem mnemonicParsing="false"  text="Our repository" />
                         <MenuItem mnemonicParsing="false" text="About" />
                     </items>
                 </Menu>
@@ -96,7 +96,7 @@
                                         </ImageView>
                                     </graphic>
                                 </ToggleButton>
-                                <ToggleButton fx:id="playBtn" maxHeight="76.0" maxWidth="76.0" minHeight="76.0" minWidth="76.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="top-btn" toggleGroup="$PlayGroup">
+                                <ToggleButton fx:id="playBtn" maxHeight="76.0" maxWidth="76.0" minHeight="76.0" minWidth="76.0" mnemonicParsing="false" onAction="#play" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="top-btn" toggleGroup="$PlayGroup">
                                     <graphic>
                                         <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
@@ -148,7 +148,7 @@
                         </Button>
                         <VBox alignment="CENTER" maxWidth="76.0" minWidth="76.0" prefHeight="512.0" prefWidth="76.0" spacing="10.0">
                             <children>
-                                <ToggleButton fx:id="moveBtn" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn">
+                                <ToggleButton fx:id="moveBtn" mnemonicParsing="false" onAction="#setMoveMode" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn">
                                     <graphic>
                                         <ImageView fitHeight="84.0" fitWidth="60.0" preserveRatio="true">
                                             <image>
@@ -160,7 +160,7 @@
                                         <ToggleGroup fx:id="SettingsGroup" />
                                     </toggleGroup>
                                 </ToggleButton>
-                                <ToggleButton fx:id="vertexBtn" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn" toggleGroup="$SettingsGroup">
+                                <ToggleButton fx:id="vertexBtn" mnemonicParsing="false" onAction="#setVertexCreationMode" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn" toggleGroup="$SettingsGroup">
                                     <graphic>
                                         <ImageView fitHeight="60.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
@@ -169,7 +169,7 @@
                                         </ImageView>
                                     </graphic>
                                 </ToggleButton>
-                                <ToggleButton fx:id="edgeBtn" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn" toggleGroup="$SettingsGroup">
+                                <ToggleButton fx:id="edgeBtn" mnemonicParsing="false" onAction="#setEdgeCreationMode" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn" toggleGroup="$SettingsGroup">
                                     <graphic>
                                         <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
@@ -178,7 +178,7 @@
                                         </ImageView>
                                     </graphic>
                                 </ToggleButton>
-                                <ToggleButton fx:id="chooseBtn" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn" toggleGroup="$SettingsGroup">
+                                <ToggleButton fx:id="chooseBtn" mnemonicParsing="false" onAction="#setChooseMode" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn" toggleGroup="$SettingsGroup">
                                     <graphic>
                                         <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
@@ -187,7 +187,7 @@
                                         </ImageView>
                                     </graphic>
                                 </ToggleButton>
-                                <Button fx:id="clearBtn" mnemonicParsing="false" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn">
+                                <Button fx:id="clearBtn" mnemonicParsing="false" onAction="#clearGraph" prefHeight="76.0" prefWidth="76.0" style="-fx-background-radius: 400;" styleClass="left-btn">
                                     <graphic>
                                         <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
