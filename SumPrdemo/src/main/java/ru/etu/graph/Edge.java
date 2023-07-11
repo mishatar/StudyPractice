@@ -26,9 +26,9 @@ public class Edge {
     }
 
     /**
-     * Возвращает пару вершин (от и до)
+     * Returns the pair of vertices (from and to)
      *
-     * @return пару вершин
+     * @return pair of vertices
      */
     public Pair<Vertex, Vertex> getVertices() {
         return new Pair<>(vertexOutbound, vertexInbound);

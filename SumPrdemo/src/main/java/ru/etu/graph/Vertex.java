@@ -28,7 +28,6 @@ public class Vertex {
                 '}';
     }
 
-    /*Возвращает true, если аргументы равны друг другу и false в противном случае. */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -37,7 +36,6 @@ public class Vertex {
         return getData().equals(vertex.getData());
     }
 
-    /*Генерирует хэш-код для последовательности входных значений. */
     @Override
     public int hashCode() {
         return Objects.hash(getData());

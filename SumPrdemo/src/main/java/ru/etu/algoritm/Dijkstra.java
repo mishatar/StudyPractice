@@ -10,21 +10,22 @@ import java.util.*;
 public class Dijkstra {
 
     /**
-     * стек с кратчайшим путем от начала до конца
+     * stack with shortest path from beginning to end
      */
     private Stack<Vertex> path;
     /**
-     * Граф для поиска пути
+     * Graph to use for pathfinding
      */
     private Graph graph;
+    private ArrayList<StepDeltaData> steps;
 
     public Dijkstra() {
     }
 
     /**
-     * Конструктор
+     * Constructor
      *
-     *  Граф для поиска пути
+     * @param graph graph to use for pathfinding
      */
     public Dijkstra(Graph graph) {
         this.graph = graph;
@@ -32,14 +33,15 @@ public class Dijkstra {
     }
 
     /**
-     * Метод для запуска поиска пути. Доступ к найденному пути можно получить с помощью метода getPath().
+     * Method to launch pathfinding. Founded path can be accessed via getPath() method.
      *
-     * @param currentInput начальная вершина поиска пути
-     * @param toInput конечная вершина поиска пути
-     * @return true в случае успеха (путь найден), false в случае неудачи (путь не найден)
+     * @param currentInput pathfinding beginning vertex
+     * @param toInput      pathfinding end vertex
+     * @return true on success (path found), false on failure (path not found)
      */
     public boolean findPath(Vertex currentInput, Vertex toInput) {
         path.removeAllElements();
+        steps = new ArrayList<>();
         VertexDijkstra current = new VertexDijkstra(currentInput);
         VertexDijkstra to = new VertexDijkstra(toInput);
 
@@ -50,25 +52,23 @@ public class Dijkstra {
         int addPoints = 0;
 
         while (!current.equals(to)) {
-            /*создаем массив из смежных верштн */
             ArrayList<VertexDijkstra> vertexes = getConnectedVertexes(current);
             for (Vertex elem : vertexes) {
-                /*если мы проходили эту вершину, то идем дальше */
                 if (checkedVertexes.contains(elem.getData())) {
                     continue;
                 }
                 VertexDijkstra output = new VertexDijkstra(elem);
-                /*считаем стоимость пути до вершины */
                 int vertexCost = addPoints + getNodeEdgeWeight(current, output);
-                /* если мы не проходили эту вершину, то else*/
+                createStep(StepType.CHECK, current, output, vertexCost);
                 if (nodesToProcess.containsKey(output.getData())) {
-                    /* если путь до этой вершины меньше предыдущей, то обновляем данные*/
                     if (nodesToProcess.get(output.getData()).getKey() > vertexCost) {
+                        createStep(StepType.UPDATE, current, output, vertexCost);
                         queue.add(new Pair<>(vertexCost, output));
                         nodesToProcess.put(output.getData(), new Pair<>(vertexCost, output));
                         output.setParent(current);
                     }
                 } else {
+                    createStep(StepType.UPDATE, current, output, vertexCost);
                     nodesToProcess.put(output.getData(), new Pair<>(vertexCost, output));
                     queue.add(new Pair<>(vertexCost, output));
                     output.setParent(current);
@@ -81,6 +81,7 @@ public class Dijkstra {
             checkedVertexes.add(current.getData());
             current = queue.remove().getValue();
             addPoints = nodesToProcess.get(current.getData()).getKey();
+            createStep(StepType.MOVE, current.getParent(), current, addPoints);
         }
         Stack<Vertex> reverse = new Stack<>();
         while (current.getParent() != null) {
@@ -95,10 +96,11 @@ public class Dijkstra {
     }
 
     /**
-     * Метод нахождения расстояния между двумя вершинами
-     * @param from вершина родителя 
-     * @param to текущая вершина
-     * @return расстояние между вершинами
+     * Method of finding a distance betveen 2 Vertexes
+     *
+     * @param from parent vertex
+     * @param to   current vertex
+     * @return distance between vertexes
      */
     private int getNodeEdgeWeight(Vertex from, Vertex to) {
         var edge = graph.getEdge(from, to);
@@ -110,7 +112,6 @@ public class Dijkstra {
         return Integer.MAX_VALUE;
     }
 
-    /* возвращает список всех смежных вершин вершин*/
     private ArrayList<VertexDijkstra> getConnectedVertexes(VertexDijkstra current) {
         ArrayList<VertexDijkstra> vertexes = new ArrayList<>();
         List<Edge> edges = graph.incidentEdges(current);
@@ -120,7 +121,11 @@ public class Dijkstra {
         return vertexes;
     }
 
-
+    /**
+     * Get a path from last find iteration
+     *
+     * @return founded path
+     */
     public List<String> getPath() {
         return path.stream().map(Vertex::getData).toList();
     }
@@ -131,5 +136,13 @@ public class Dijkstra {
 
     public void setGraph(Graph graph) {
         this.graph = graph;
+    }
+
+    private void createStep(StepType type, VertexDijkstra current, VertexDijkstra child, int weight) {
+        steps.add(new StepDeltaData(type, current, child, weight));
+    }
+
+    public ArrayList<StepDeltaData> getSteps() {
+        return steps;
     }
 }

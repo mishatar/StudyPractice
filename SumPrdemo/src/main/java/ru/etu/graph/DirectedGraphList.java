@@ -5,8 +5,8 @@ import java.util.*;
 
 public class DirectedGraphList implements DirectedGraph {
 
-    // не допускает дублирования вершин.
-    // Допускается максимум два ребра между любыми двумя вершинами. Но они должны быть разнонаправленными.
+    // This implementation does not allow duplicates of vertices
+    // Allows max two edge between any 2 vertices. But they should be multi-directional.
     private final Map<String, Vertex> vertices;
     private final List<Edge> edges;
 
@@ -36,7 +36,8 @@ public class DirectedGraphList implements DirectedGraph {
     }
 
     @Override
-    public List<Edge> incidentEdges(Vertex vertexFrom) {
+    public List<Edge> incidentEdges(Vertex vertexFrom) throws InvalidVertexException {
+        checkVertex(vertexFrom);
 
         List<Edge> incidentEdges = new ArrayList<>();
 
@@ -50,7 +51,8 @@ public class DirectedGraphList implements DirectedGraph {
     }
 
     @Override
-    public List<Edge> inboundEdges(Vertex vertexTo) {
+    public List<Edge> inboundEdges(Vertex vertexTo) throws InvalidVertexException {
+        checkVertex(vertexTo);
 
         List<Edge> incidentEdges = new ArrayList<>();
         for (var edge : edges) {
@@ -63,7 +65,9 @@ public class DirectedGraphList implements DirectedGraph {
     }
 
     @Override
-    public Vertex opposite(Vertex vertex, Edge edge) {
+    public Vertex opposite(Vertex vertex, Edge edge) throws InvalidVertexException, InvalidEdgeException {
+        checkVertex(vertex);
+        checkEdge(edge);
 
         if (!edge.contains(vertex)) {
             return null;
@@ -77,7 +81,9 @@ public class DirectedGraphList implements DirectedGraph {
     }
 
     @Override
-    public boolean areConnected(Vertex vertexOut, Vertex vertexIn) {
+    public boolean areConnected(Vertex vertexOut, Vertex vertexIn) throws InvalidEdgeException {
+        checkVertex(vertexIn);
+        checkVertex(vertexOut);
 
         if (vertexOut.equals(vertexIn)) {
             return false;
@@ -93,8 +99,10 @@ public class DirectedGraphList implements DirectedGraph {
     }
 
     @Override
-    public Vertex insertVertex(String element) {
+    public Vertex insertVertex(String element) throws InvalidVertexException {
         if (element == null) throw new IllegalArgumentException("Cannot create vertex with 'null' as name.");
+
+        checkNoVertexWithData(element);
 
         Vertex newVertex = new Vertex(element);
 
@@ -104,10 +112,18 @@ public class DirectedGraphList implements DirectedGraph {
     }
 
     @Override
-    public Edge insertEdge(Vertex vertexOut, Vertex vertexIn, int edgeElement) {
+    public Edge insertEdge(Vertex vertexOut, Vertex vertexIn, int edgeElement) throws InvalidVertexException, InvalidEdgeException {
+
+        checkVertex(vertexOut);
+        checkVertex(vertexIn);
+
+        if (vertexOut.equals(vertexIn)) {
+            throw new InvalidVertexException("Cannot make loop edge.");
+        }
 
         Edge newEdge = new Edge(edgeElement, vertexOut, vertexIn);
 
+        checkEdgeDoesNotExists(newEdge);
 
         edges.add(newEdge);
 
@@ -115,16 +131,24 @@ public class DirectedGraphList implements DirectedGraph {
     }
 
     @Override
-    public Edge insertEdge(String vertElement1, String vertElement2, int edgeElement) {
+    public Edge insertEdge(String vertElement1, String vertElement2, int edgeElement) throws InvalidVertexException, InvalidEdgeException {
 
         if (vertElement1 == null) throw new IllegalArgumentException("Cannot get vertex with 'null' as name.");
         if (vertElement2 == null) throw new IllegalArgumentException("Cannot get vertex with 'null' as name.");
 
+        checkHasVertexWithData(vertElement1);
+        checkHasVertexWithData(vertElement2);
 
         Vertex outVertex = getVertex(vertElement1);
         Vertex inVertex = getVertex(vertElement2);
 
+        if (vertElement1.equals(vertElement2)) {
+            throw new InvalidVertexException("Cannot make loop edge.");
+        }
+
         Edge newEdge = new Edge(edgeElement, outVertex, inVertex);
+
+        checkEdgeDoesNotExists(newEdge);
 
         edges.add(newEdge);
 
@@ -132,11 +156,12 @@ public class DirectedGraphList implements DirectedGraph {
     }
 
     @Override
-    public String removeVertex(Vertex vertex) {
+    public String removeVertex(Vertex vertex) throws InvalidVertexException {
+        checkVertex(vertex);
 
         String element = vertex.getData();
 
-        //удалить инцидентные ребра (входящие и исходящие)
+        //remove incident edges (inbound and outbound)
         Collection<Edge> inOutEdges = incidentEdges(vertex);
         inOutEdges.addAll(inboundEdges(vertex));
 
@@ -150,7 +175,8 @@ public class DirectedGraphList implements DirectedGraph {
     }
 
     @Override
-    public int removeEdge(Edge edge) {
+    public int removeEdge(Edge edge) throws InvalidEdgeException {
+        checkEdge(edge);
 
         int element = edge.getData();
         edges.remove(edge);
@@ -160,6 +186,8 @@ public class DirectedGraphList implements DirectedGraph {
 
     @Override
     public Edge getEdge(Vertex vertexFrom, Vertex vertexTo) {
+        checkVertex(vertexFrom);
+        checkVertex(vertexTo);
 
         for (var edge : edges) {
             if (edge.getVertexOutbound().equals(vertexFrom) && edge.getVertexInbound().equals(vertexTo)) {
@@ -174,6 +202,8 @@ public class DirectedGraphList implements DirectedGraph {
         if (vertexElFrom == null || vertexElTo == null)
             throw new IllegalArgumentException("Vertex name cannot be null.");
 
+        checkHasVertexWithData(vertexElFrom);
+        checkHasVertexWithData(vertexElTo);
 
         var vertexFrom = getVertex(vertexElFrom);
         var vertexTo = getVertex(vertexElTo);
@@ -191,6 +221,7 @@ public class DirectedGraphList implements DirectedGraph {
         if (vertexEl == null)
             throw new IllegalArgumentException("Vertex name cannot be null.");
 
+        checkHasVertexWithData(vertexEl);
 
         for (Vertex vertex : vertices.values()) {
             if (vertex.getData().equals(vertexEl)) {
@@ -219,5 +250,65 @@ public class DirectedGraphList implements DirectedGraph {
 
 
         return builder.toString();
+    }
+
+
+    private void checkVertex(Vertex vertex) throws InvalidVertexException {
+        if (vertex == null) throw new InvalidVertexException("Vertex is null.");
+
+        if (!vertices.containsKey(vertex.getData())) {
+            throw new InvalidVertexException("Vertex does not belong to this graph.");
+        }
+    }
+
+    private void checkEdge(Edge edge) throws InvalidEdgeException {
+        if (edge == null) throw new InvalidEdgeException("Edge is null.");
+
+        for (var graphEdge : edges) {
+            var edgeVal = graphEdge.getData();
+
+            if (edgeVal == edge.getData() &&
+                    (graphEdge.getVertexInbound().equals(edge.getVertexInbound()) &&
+                            graphEdge.getVertexOutbound().equals(edge.getVertexOutbound()))) {
+                return;
+            }
+        }
+
+        throw new InvalidEdgeException("Edge does not belong to this graph.");
+    }
+
+    private void checkNoVertexWithData(String data) throws InvalidVertexException {
+        if (vertices.containsKey(data)) {
+            throw new InvalidVertexException("There's already a vertex with this element.");
+        }
+    }
+
+    private void checkHasVertexWithData(String data) throws InvalidVertexException {
+        if (!vertices.containsKey(data)) {
+            throw new InvalidVertexException("No vertex contains " + data.toString());
+        }
+    }
+
+    private void checkEdgeDoesNotExists(Edge edge) throws InvalidEdgeException {
+
+        for (var edgeObj : edges) {
+            if ((edgeObj.getVertexInbound().equals(edge.getVertexInbound()) && edgeObj.getVertexOutbound().equals(edge.getVertexOutbound()))) {
+                throw new InvalidEdgeException("There's already a edge between these vertices (in direction '" +
+                        edge.getVertexOutbound() + "' -> '" + edge.getVertexInbound() + "').");
+            }
+        }
+    }
+
+    private void checkHasEdgeWithData(int data) throws InvalidEdgeException {
+        boolean contains = false;
+        for (var graphEdge : edges) {
+            if (graphEdge.getData() == data) {
+                contains = true;
+                break;
+            }
+        }
+        if (!contains) {
+            throw new InvalidEdgeException("No edge contains " + data);
+        }
     }
 }

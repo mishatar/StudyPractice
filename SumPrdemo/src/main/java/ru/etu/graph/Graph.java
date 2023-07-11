@@ -3,71 +3,93 @@ package ru.etu.graph;
 import java.util.List;
 
 /**
- * Граф представляет собой набор вершин, соединенных ребрами. Ребра не имеют направления.
+ * Graph is a set of vertices connected by edges. Edges have no direction.
  *
  * @see Edge
  * @see Vertex
  */
 public interface Graph {
 
-    /* Метод, возвращающий количество вершин в графе */
+    /**
+     * Method that returns number of vertices in the graph
+     *
+     * @return number of vertices in the graph
+     */
     int verticesNum();
 
-    /*  Метод, возвращающий количество ребер в графе*/
+    /**
+     * Method that returns number of edges in the graph
+     *
+     * @return number of edges in the graph
+     */
     int edgesNum();
 
-    /*Метод, возвращающий список вершин*/
+    /**
+     * Method that returns list of vertices
+     *
+     * @return list of vertices
+     */
     List<Vertex> getVertices();
 
-    /* Метод, возвращающий список ребер*/
+    /**
+     * Method that returns list of edges
+     *
+     * @return list of edges
+     */
     List<Edge> getEdges();
 
     /**
-     * Находит и возвращает список инцидентных ребер для <code>vertex</code>
-     * В ориентированном графе ребро исходит из обоих концов.
+     * Finds and returns list of incident edges for <code>vertex</code>
      * Incident - originates from here (In oriented graph edge originates from both ends.
      * So it may be both in outbound or in inbound property of the edge)
      *
-     * @param vertex вершина, из которой нужно найти инцидентные ребра
-      * @return список инцидентных ребер
+     * @param vertex vertex from which to find incident edges
+     * @return list of incident edges
+     * @throws InvalidVertexException if vertex is invalid or does not belong to the graph
      */
-    List<Edge> incidentEdges(Vertex vertex);
+    List<Edge> incidentEdges(Vertex vertex) throws InvalidVertexException;
 
     /**
-     * Возвращает противоположную вершину.
+     * Returns opposite vertex from edge.
      *
-     * @param vertex первая вершина
-     * @param edge   само ребро
-     * @return противоположная вершина
+     * @param vertex the first vertex on the edge
+     * @param edge   the edge itself
+     * @return opposite vertex for current edge
+     * @throws InvalidVertexException if vertex is invalid or does not belong to the graph
+     * @throws InvalidEdgeException   if edge is invalid or does not belong to the graph
      */
-    Vertex opposite(Vertex vertex, Edge edge);
+    Vertex opposite(Vertex vertex, Edge edge) throws InvalidVertexException, InvalidEdgeException;
 
     /**
-     * Определяет, соединены ли две вершины каким-либо ребром
-      *
-      * @param vertex1 первая вершина
-      * @param vertex2 вторая вершина
-      * @return true если подключено, false - иначе
-     */
-    boolean areConnected(Vertex vertex1, Vertex vertex2);
-
-    /**
-     * Добавляет новую вершину в граф
+     * Determines if two vertices are connected with any edge
      *
-     * @param element данные для новой вершинв
-     * @return возвращает только созданную вершину
+     * @param vertex1 first vertex
+     * @param vertex2 second vertex
+     * @return true if connected, false - otherwise
+     * @throws InvalidVertexException if any of the vertices is invalid or does not belong to the graph
      */
-    Vertex insertVertex(String element);
+    boolean areConnected(Vertex vertex1, Vertex vertex2) throws InvalidVertexException;
 
     /**
-     * Добавляет новое ребро в граф
+     * Inserts new vertex to the graph
      *
-     * @param vertex1     первая вешина
-     * @param vertex2     вторая вершина
-     * @param edgeElement данные о ребре
-     * @return возвращает только созданное ребро
+     * @param element data for new vertex
+     * @return link to newly created vertex
+     * @throws InvalidVertexException if there is already a vertex with the same data
      */
-    Edge insertEdge(Vertex vertex1, Vertex vertex2, int edgeElement);
+    Vertex insertVertex(String element) throws InvalidVertexException;
+
+    /**
+     * Inserts new edge to the graph
+     *
+     * @param vertex1     first vertex link
+     * @param vertex2     second vertex link
+     * @param edgeElement data to be stored in the edge
+     * @return link to newly created edge
+     * @throws InvalidVertexException if any of the vertices is invalid or does not belong to the graph
+     * @throws InvalidEdgeException   if there is already an edge with the same data and vertices
+     */
+    Edge insertEdge(Vertex vertex1, Vertex vertex2, int edgeElement) throws InvalidVertexException, InvalidEdgeException;
 
     /**
      * Inserts new edge to the graph
@@ -76,24 +98,28 @@ public interface Graph {
      * @param vertElement2 second vertex data
      * @param edgeElement  data to be stored in the edge
      * @return link to newly created edge
+     * @throws InvalidVertexException if any of the vertices is invalid or does not belong to the graph
+     * @throws InvalidEdgeException   if there is already an edge with the same data and vertices
      */
-    Edge insertEdge(String vertElement1, String vertElement2, int edgeElement);
+    Edge insertEdge(String vertElement1, String vertElement2, int edgeElement) throws InvalidVertexException, InvalidEdgeException;
 
     /**
-     * Удаляет вершину из графа
+     * Removes vertex from graph
      *
-     * @param vertex вершина которую нужно удалить
-     * @return данные удаленной вершины
+     * @param vertex link to the vertex to delete
+     * @return data from removed vertex
+     * @throws InvalidVertexException if vertex is invalid or does not belong to the graph
      */
-    String removeVertex(Vertex vertex);
+    String removeVertex(Vertex vertex) throws InvalidVertexException;
 
     /**
-     * Удаляет ребро из графа
+     * Removes edge from graph
      *
-     * @param edge ребро которое надо удалить
-     * @return данные удаленного ребра
+     * @param edge link to the edge to delete
+     * @return data from removed edge
+     * @throws InvalidEdgeException if edge is invalid or does not belong to the graph
      */
-    int removeEdge(Edge edge);
+    int removeEdge(Edge edge) throws InvalidEdgeException;
 
     Edge getEdge(Vertex vertexFrom, Vertex vertexTo);
 
