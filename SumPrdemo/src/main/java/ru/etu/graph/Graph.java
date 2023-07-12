@@ -69,13 +69,13 @@ public interface Graph {
      */
     Edge insertEdge(Vertex vertex1, Vertex vertex2, int edgeElement);
 
-    /**
-     * Inserts new edge to the graph
+/**
+     * Добавляет новое ребро в граф
      *
-     * @param vertElement1 first vertex data
-     * @param vertElement2 second vertex data
-     * @param edgeElement  data to be stored in the edge
-     * @return link to newly created edge
+     * @param vertElement1 данные о первой вершине
+     * @param vertElement2 данные о второй вершине
+     * @param edgeElement  данные о ребре
+     * @return возвращает добавленное ребро
      */
     Edge insertEdge(String vertElement1, String vertElement2, int edgeElement);
 

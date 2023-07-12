@@ -60,9 +60,8 @@ public class Dijkstra {
                 VertexDijkstra output = new VertexDijkstra(elem);
                 /*считаем стоимость пути до вершины */
                 int vertexCost = addPoints + getNodeEdgeWeight(current, output);
-                /* если мы не проходили эту вершину, то else*/
+                /* */
                 if (nodesToProcess.containsKey(output.getData())) {
-                    /* если путь до этой вершины меньше предыдущей, то обновляем данные*/
                     if (nodesToProcess.get(output.getData()).getKey() > vertexCost) {
                         queue.add(new Pair<>(vertexCost, output));
                         nodesToProcess.put(output.getData(), new Pair<>(vertexCost, output));
