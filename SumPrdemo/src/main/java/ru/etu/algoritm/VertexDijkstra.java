@@ -5,7 +5,7 @@ import ru.etu.graph.Vertex;
 import java.util.Objects;
 
 /**
- * Расширенная версия Vertex для аогоритма дейкстры с данными о родителе
+ * Extended version of Vertex for Dijkstra algorithm with "parent" reference
  */
 public class VertexDijkstra extends Vertex {
 
@@ -14,36 +14,37 @@ public class VertexDijkstra extends Vertex {
     private final Vertex original;
 
     /**
-     * конструктор
+     * Constructor
      *
-     * @param vertex оригинальная вершина
+     * @param vertex original vertex
      */
     public VertexDijkstra(Vertex vertex) {
         super(vertex.getData());
-
         original = vertex;
     }
 
     /**
-     * устанавливает вершину родителя (вершина с кратчайшим путем от начала)
+     * Add parent vertex (vertex with shortest way from beginning)
      *
-     * @param parent вершина родителя
+     * @param parent parent vertex
      */
     public void setParent(VertexDijkstra parent) {
         this.parent = parent;
     }
 
     /**
-     * Получение вершины родителя (вершина с кратчайшим путем от начала)
+     * Get parent vertex (vertex with shortest way from beginning)
      *
-     * @return вершина родителя
+     * @return parent vertex
      */
     public VertexDijkstra getParent() {
         return parent;
     }
 
     /**
-     * возвращает оригинальную вершину
+     * Returns original Vertex from which this one was created
+     *
+     * @return original Vertex from which this one was created
      */
     public Vertex getOriginal() {
         return original;
@@ -53,6 +54,7 @@ public class VertexDijkstra extends Vertex {
     public boolean equals(Object o) {
         if (o.getClass() == Vertex.class) return o.equals(this);
         if (!(o instanceof VertexDijkstra)) return false;
+        //System.out.println(((VertexDijkstra) o).getElement()+" and "+this.getElement()+" = "+Objects.equals(((VertexDijkstra) o).getElement(), this.getElement()));
         return Objects.equals(((VertexDijkstra) o).getData(), this.getData());
     }
 }

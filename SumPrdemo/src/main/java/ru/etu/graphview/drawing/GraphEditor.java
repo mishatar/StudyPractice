@@ -6,9 +6,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import ru.etu.graph.DirectedGraphList;
 import ru.etu.graph.Edge;
+import ru.etu.graph.InvalidVertexException;
 import ru.etu.graph.Vertex;
 import ru.etu.graphview.GraphPane;
 import ru.etu.graphview.base.*;
+import ru.etu.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.List;
  */
 public class GraphEditor {
 
+    Logger loggerInstance;
 
     private GraphPane graphPane; // To have access to pane and graph itself
 
@@ -55,6 +58,7 @@ public class GraphEditor {
         this.viewMode = viewMode;
 
         algLabels = new ArrayList<>();
+        loggerInstance = Logger.getInstance();
     }
 
     /**
@@ -241,21 +245,24 @@ public class GraphEditor {
                         String data = newVertexNode.getLabelField().getText();
 
                         if (data.length() == 0) {
-                            System.out.println( "Vertex name can't be empty.");
+                            loggerInstance.printMessage(getClass().getName(), "Vertex name can't be empty.", true);
                         } else if (data.contains(" ")) {
-                            System.out.println( "Vertex name can't have spaces in its name.");
+                            loggerInstance.printMessage(getClass().getName(), "Vertex name can't have spaces in its name.", true);
                         } else {
                             Vertex newVertex;
+                            try {
+                                newVertex = graphPane.getGraph().insertVertex(data);
 
-                            newVertex = graphPane.getGraph().insertVertex(data);
+                                newVertexNode.setVertex(newVertex);
+                                graphPane.getVertexMap().put(newVertex, newVertexNode);
 
-                            newVertexNode.setVertex(newVertex);
-                            graphPane.getVertexMap().put(newVertex, newVertexNode);
+                                CreateLabelFromTextField(newVertexNode.getVertex().getData(), newVertexNode, newVertexNode.getLabelField());
 
-                            CreateLabelFromTextField(newVertexNode.getVertex().getData(), newVertexNode, newVertexNode.getLabelField());
+                                isCreatingVertex = false;
 
-                            isCreatingVertex = false;
-
+                            } catch (InvalidVertexException exception) {
+                                loggerInstance.printMessage(getClass().getName(), "Vertex with the same name already exists! Try another name.", true);
+                            }
                         }
                     } else if (e.getCode() == KeyCode.ESCAPE && isCreatingVertex) {
                         graphPane.getChildren().remove(newVertexNode.getLabelField());
@@ -291,15 +298,17 @@ public class GraphEditor {
                             firstNode.addStyleClass("vertex-selected");
 
                             currentNode = 1;
+                        } else {
+                            loggerInstance.printMessage(getClass().getName(), "Not a vertex! Pointed object is: " + e.getPickResult().getIntersectedNode().getClass());
                         }
                     } else if (e.isPrimaryButtonDown() && currentNode == 1) {
                         if (e.getPickResult().getIntersectedNode().getClass() == FXVertexNode.class) {
                             secondNode = (FXVertexNode) e.getPickResult().getIntersectedNode();
 
                             if (firstNode == secondNode) {
-                                System.out.println( "You chose the same vertices! Try another again.");
+                                loggerInstance.printMessage(getClass().getName(), "You chose the same vertices! Try another again.", true);
                             } else if (graphPane.getGraph().areConnected(firstNode.getVertex(), secondNode.getVertex())) {
-                                System.out.println(  "Those Vertices are already connected! Try another pair.");
+                                loggerInstance.printMessage(getClass().getName(), "Those Vertices are already connected! Try another pair.", true);
                             } else {
                                 secondNode.addStyleClass("vertex-selected");
                                 //if directed, else - undirected
@@ -360,6 +369,8 @@ public class GraphEditor {
                                 currentNode = 2;
                             }
 
+                        } else {
+                            loggerInstance.printMessage(getClass().getName(), "Not a vertex! Pointed object is: " + e.getPickResult().getIntersectedNode().getClass());
                         }
                     }
                 });
@@ -370,23 +381,27 @@ public class GraphEditor {
                         int data;
                         Edge newEdge;
 
-                                               data = Integer.parseInt(newEdgeNode.getLabelField().getText());
+                        try {
+                            data = Integer.parseInt(newEdgeNode.getLabelField().getText());
 
-                        if (data <= 0) {
-                            System.out.println( "Entered value is less then 0 or equal it! Try again.");
-                        } else {
-                            newEdge = graphPane.getGraph().insertEdge(firstNode.getVertex(), secondNode.getVertex(), data);
+                            if (data <= 0) {
+                                loggerInstance.printMessage(getClass().getName(), "Entered value is less then 0 or equal it! Try again.", true);
+                            } else {
+                                newEdge = graphPane.getGraph().insertEdge(firstNode.getVertex(), secondNode.getVertex(), data);
 
-                            newEdgeNode.setEdge(newEdge);
-                            graphPane.getEdgeMap().put(newEdge, newEdgeNode);
+                                newEdgeNode.setEdge(newEdge);
+                                graphPane.getEdgeMap().put(newEdge, newEdgeNode);
 
-                            CreateLabelFromTextField(Integer.toString(data), newEdgeNode, newEdgeNode.getLabelField());
+                                CreateLabelFromTextField(Integer.toString(data), newEdgeNode, newEdgeNode.getLabelField());
 
-                            newEdgeNode.removeStyleClass("edge-in-creation");
-                            firstNode.removeStyleClass("vertex-selected");
-                            secondNode.removeStyleClass("vertex-selected");
+                                newEdgeNode.removeStyleClass("edge-in-creation");
+                                firstNode.removeStyleClass("vertex-selected");
+                                secondNode.removeStyleClass("vertex-selected");
 
-                            currentNode = 0;
+                                currentNode = 0;
+                            }
+                        } catch (NumberFormatException numberFormatException) {
+                            loggerInstance.printMessage(getClass().getName(), "Entered value is not a number! Try again.", true);
                         }
 
                     } else if (e.getCode() == KeyCode.ESCAPE && currentNode == 2) {
@@ -445,6 +460,8 @@ public class GraphEditor {
                             firstNodeSelect.addStyleClass("vertex-selected-for-algorithm-1");
 
                             nodesSelected1 = 1;
+                        } else {
+                            loggerInstance.printMessage(getClass().getName(), "Not a vertex! Pointed object is: " + e.getPickResult().getIntersectedNode().getClass());
                         }
                     } else if (e.isPrimaryButtonDown() && nodesSelected1 == 1) {
                         if (e.getPickResult().getIntersectedNode().getClass() == FXVertexNode.class) {
@@ -459,6 +476,8 @@ public class GraphEditor {
 
                                 nodesSelected1 = 2;
                             }
+                        } else {
+                            loggerInstance.printMessage(getClass().getName(), "Not a vertex! Pointed object is: " + e.getPickResult().getIntersectedNode().getClass());
                         }
                     } else if (e.isPrimaryButtonDown() && nodesSelected1 == 2) {
                         if (e.getPickResult().getIntersectedNode().getClass() == FXVertexNode.class) {
@@ -476,6 +495,8 @@ public class GraphEditor {
                                 secondNodeSelect = null;
                                 nodesSelected1 = 1;
                             }
+                        } else {
+                            loggerInstance.printMessage(getClass().getName(), "Not a vertex! Pointed object is: " + e.getPickResult().getIntersectedNode().getClass());
                         }
                     }
                 });
