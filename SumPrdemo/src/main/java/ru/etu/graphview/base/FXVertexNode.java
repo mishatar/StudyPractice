@@ -1,5 +1,6 @@
 package ru.etu.graphview.base;
 
+import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.TextField;

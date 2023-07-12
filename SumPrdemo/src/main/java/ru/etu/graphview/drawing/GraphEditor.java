@@ -4,6 +4,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import ru.etu.controllers.LoggerView;
 import ru.etu.graph.DirectedGraphList;
 import ru.etu.graph.Edge;
 import ru.etu.graph.InvalidVertexException;

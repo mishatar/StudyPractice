@@ -1,9 +1,9 @@
 package ru.etu.logger;
 
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import ru.etu.controllers.LoggerView;
+import javafx.scene.control.Alert;
 
 public class Logger {
 

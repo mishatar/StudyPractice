@@ -1,5 +1,6 @@
 package ru.etu.graphview;
 
+import ru.etu.graph.Graph;
 import ru.etu.graphview.base.FXVertex;
 
 import java.util.Collection;

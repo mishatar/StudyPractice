@@ -1,11 +1,15 @@
 package ru.etu.graphview;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.css.StyleClass;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import ru.etu.graph.Edge;
 import ru.etu.graph.Graph;
 import ru.etu.graph.Vertex;
 import ru.etu.graphview.base.*;
+import ru.etu.graphview.styling.Stylable;
 import ru.etu.graphview.styling.StyleEngine;
 
 import java.util.ArrayList;
